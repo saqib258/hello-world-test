@@ -1,16 +1,41 @@
 pipeline {
     agent any
+    
+    tools {
+        maven 'maven-3' // Ensure this matches your Jenkins Global Tool Configuration name
+    }
+
     stages {
-        stage('Compile') {
+        stage('Checkout') {
             steps {
-                echo 'Compiling...'
-                sh 'javac src/main/java/com/example/Hello.java'
+                git branch: 'main', url: 'https://github.com/your-username/hello-world-test.git'
             }
         }
-        stage('Run') {
+
+        stage('Maven Build') {
             steps {
-                echo 'Running...'
-                sh 'java -cp src/main/java com.example.Hello'
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                // This assumes you have a SonarQube server running
+                echo "Running Static Application Security Testing (SAST)..."
+                // sh 'mvn sonar:sonar' 
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t hello-world-app:latest .'
+            }
+        }
+
+        stage('Trivy Image Scan') {
+            steps {
+                echo "Scanning Docker Image for vulnerabilities..."
+                sh 'trivy image --severity HIGH,CRITICAL hello-world-app:latest'
             }
         }
     }
