@@ -28,13 +28,13 @@ pipeline {
             }
         }
 
-        /* stage('Trivy Image Scan') {
+      stage('Trivy Image Scan') {
             steps {
-                // This stage is commented out for now. 
-                // It scans the Docker image for OS vulnerabilities.
-                sh 'trivy image --format table -o trivy-image-report.html hello-world-app:latest'
+                // --exit-code 0: The pipeline continues even if vulnerabilities are found.
+                // --severity HIGH,CRITICAL: Focuses only on the most important risks.
+                sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL --format table hello-world-app:latest'
             }
         }
-        */
+        
     }
 }
