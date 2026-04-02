@@ -18,11 +18,11 @@ pipeline {
             }
         }
 
-    /*    stage('Trivy Image Scan') {
+        stage('Trivy Image Scan') {
             steps {
                 sh 'trivy image --severity HIGH,CRITICAL hello-world-app:latest'
             }
         }
     }
 }
-*/
+
