@@ -14,14 +14,17 @@ pipeline {
 stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    // Adding the login token directly ensures the scan is authorized
                     sh 'mvn sonar:sonar \
                         -Dsonar.projectKey=test-app \
                         -Dsonar.projectName="Thesis-Test-App" \
-                        -Dsonar.login= sqa_2a7831f98d0f91c3990b230c4fb1e5403cff308d' 
+                        -Dsonar.token="sqa_2a7831f98d0f91c3990b230c4fb1e5403cff308d"'
                 }
             }
         }
+                        
+                
+            
+        
 
         stage('Docker Build') {
             steps {
