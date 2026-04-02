@@ -32,7 +32,7 @@ pipeline {
             steps {
                 // --exit-code 0: The pipeline continues even if vulnerabilities are found.
                 // --severity HIGH,CRITICAL: Focuses only on the most important risks.
-                sh 'trivy image --cache-dir .trivycache/ --exit-code 0 --severity HIGH,CRITICAL --format table hello-world-app:latest'
+ sh 'trivy image --skip-java-db --cache-dir .trivycache/ --exit-code 0 --severity HIGH,CRITICAL --format table hello-world-app:latest'
             }
         }
         
