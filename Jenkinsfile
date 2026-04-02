@@ -1,44 +1,40 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'maven-3' 
-    }
-
-   stage('Maven Build') {
+    stages {
+        stage('Maven Build') {
             steps {
-                // Change 'compile' to 'package' to generate the JAR
-                sh 'mvn clean package -DskipTests' 
+                // 'package' creates the .jar file in the target/ folder
+                sh 'mvn clean package -DskipTests'
             }
         }
-stage('SonarQube Analysis') {
+
+        stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    sh 'mvn sonar:sonar \
-                        -Dsonar.projectKey=test-app \
-                        -Dsonar.projectName="Thesis-Test-App" \
-                        -Dsonar.token="sqa_2a7831f98d0f91c3990b230c4fb1e5403cff308d"'
+                    // Using double quotes for the sh command and single quotes for values
+                    sh "mvn sonar:sonar \
+                        -Dsonar.projectKey='test-app' \
+                        -Dsonar.projectName='Thesis-Test-App' \
+                        -Dsonar.token='sqa_2a7831f98d0f91c3990b230c4fb1e5403cff308d'"
                 }
             }
         }
-                        
-                
-            
-        
 
         stage('Docker Build') {
             steps {
+                // Builds the Docker image from your Dockerfile
                 sh 'docker build -t hello-world-app:latest .'
             }
         }
 
-
-/*      
-stage('Trivy Image Scan') {
-    steps {
-        sh 'trivy image --severity HIGH,CRITICAL hello-world-app:latest'
-    }
-}
-*/
+        /* stage('Trivy Image Scan') {
+            steps {
+                // This stage is commented out for now. 
+                // It scans the Docker image for OS vulnerabilities.
+                sh 'trivy image --format table -o trivy-image-report.html hello-world-app:latest'
+            }
+        }
+        */
     }
 }
