@@ -27,11 +27,6 @@ pipeline {
                 sh 'docker build -t hello-world-app:latest .'
             }
         }
-
-      stage('Trivy Image Scan') {
-            steps {
-                // --exit-code 0: The pipeline continues even if vulnerabilities are found.
-                // --severity HIGH,CRITICAL: Focuses only on the most important risks.
      stage('Trivy Image Scan') {
     steps {
         sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --format table hello-world-app:latest'
