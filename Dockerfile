@@ -1,11 +1,6 @@
-# Use an OpenJDK Runtime as a parent image
-FROM openjdk:17-jdk-slim
+# Replace the top line with this:
+FROM amazoncorretto:17-al2-jdk
 
-# Set the working directory
 WORKDIR /app
-
-# Copy the compiled class files from the target directory
-COPY target/classes/com /app/com
-
-# Run the application
+COPY target/classes /app
 CMD ["java", "com.example.Hello"]
