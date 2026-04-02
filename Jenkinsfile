@@ -27,9 +27,13 @@ pipeline {
                 sh 'docker build -t hello-world-app:latest .'
             }
         }
-     stage('Trivy Image Scan') {
+    stage('Trivy Image Scan') {
     steps {
-        sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --format table hello-world-app:latest'
+        // This forces Trivy to use the Jenkins workspace (on the 38GB disk) instead of /tmp
+        sh """
+            export TMPDIR=${WORKSPACE}
+            trivy image --scanners vuln --severity HIGH,CRITICAL --format table hello-world-app:latest
+        """
     }
 }
        
