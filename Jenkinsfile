@@ -5,10 +5,10 @@ pipeline {
         maven 'maven-3' 
     }
 
-    stages {
-        stage('Maven Build') {
+   stage('Maven Build') {
             steps {
-                sh 'mvn clean compile'
+                // Change 'compile' to 'package' to generate the JAR
+                sh 'mvn clean package -DskipTests' 
             }
         }
 stage('SonarQube Analysis') {
